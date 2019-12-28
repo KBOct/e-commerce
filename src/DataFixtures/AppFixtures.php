@@ -3,18 +3,37 @@
 namespace App\DataFixtures;
 
 use Faker\Factory;
-use App\Entity\Image;
+use App\Entity\User;
 // use Cocur\Slugify\Slugify;
+use App\Entity\Image;
 use App\Entity\Product;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+// DEPRECIE : use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class AppFixtures extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(EntityManagerInterface $manager)
     {
         $faker = Factory::create('fr-FR');
 
+        // Utilisateurs
+        for($i = 1; $i <= 30; $i++) {
+            $user = new User();
+
+            $user->setFirstName($faker->firstname)
+                 ->setLastName($faker->lastname)
+                 ->setEmail($faker->email)
+                 ->setLogin($faker->userName)
+                 ->setPassword('password');
+
+            $manager->persist($user);
+            $users[]=$user;
+        }
+
+
+
+        // Produits
         for($i = 1; $i <= 30; $i++) {
             $product = new Product();
             //$slugify = new Slugify();
