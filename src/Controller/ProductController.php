@@ -20,6 +20,8 @@ class ProductController extends AbstractController
     /**
      * @author BAZILE-OCTUVON Kenny <kennybazileoctuvon@gmail.com>
      * 
+     * Permet de générer la page Produits
+     * 
      * @Route("/products", name="products_index")
      */
     public function index(ProductRepository $repo)

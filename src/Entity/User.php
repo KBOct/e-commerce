@@ -2,12 +2,24 @@
 
 namespace App\Entity;
 
+//use Serializable;
+use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
+ * @UniqueEntity(
+ *  fields={"email"},
+ *  message="Un autre utilisateur s'est déjà inscrit avec cette adresse email, merci de la modifier"
+ * )
  */
+
+
 class User implements UserInterface
 {
     /**
@@ -17,10 +29,10 @@ class User implements UserInterface
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
-    private $login;
+    // /**
+    //  * @ORM\Column(type="string", length=180, unique=true)
+    //  */
+    // private $login;
 
     /**
      * @ORM\Column(type="json")
@@ -34,22 +46,31 @@ class User implements UserInterface
     private $password;
 
     /**
+     * @Assert\EqualTo(propertyPath="password", message="Vous n'avez pas correctement confirmé votre mot de passe !")
+     */
+    public $passwordConfirm;
+
+    /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Email(message="Veuillez renseigner un email valide !")
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Url(message="Veuillez donner une URL valide pour votre avatar !")
      */
     private $picture;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez renseigner votre prénom")
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez renseigner votre nom de famille")
      */
     private $lastName;
 
@@ -59,15 +80,29 @@ class User implements UserInterface
     private $commandes;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $deliveryAddress;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $billingAddress;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
+
+    /**
      * @author BAZILE-OCTUVON Kenny <kennybazileoctuvon@gmail.com>
      * 
-     * Permet d'initialiser le Slug !
+     * Permet d'initialiser le slug
      * 
      * @ORM\PrePersist
      * @ORM\PreUpdate
      * 
      */  
-    
     public function initializeSlug(){
         if(empty($this->slug)){
             $slugify = new Slugify();
@@ -116,17 +151,17 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getLogin(): ?string
-    {
-        return $this->login;
-    }
+    // public function getLogin(): ?string
+    // {
+    //     return $this->login;
+    // }
 
-    public function setLogin(string $login): self
-    {
-        $this->login = $login;
+    // public function setLogin(string $login): self
+    // {
+    //     $this->login = $login;
 
-        return $this;
-    }
+    //     return $this;
+    // }
     
 
     /**
@@ -136,7 +171,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->login;
+        return (string) $this->email;
     }
 
     /**
@@ -161,9 +196,9 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
-        return (string) $this->password;
+        return $this->password;
     }
 
     public function setPassword(string $password): self
@@ -237,5 +272,42 @@ class User implements UserInterface
 
         return $this;
     }
+
+    public function getDeliveryAddress(): ?string
+    {
+        return $this->deliveryAddress;
+    }
+
+    public function setDeliveryAddress(string $deliveryAddress): self
+    {
+        $this->deliveryAddress = $deliveryAddress;
+
+        return $this;
+    }
+
+    public function getBillingAddress(): ?string
+    {
+        return $this->billingAddress;
+    }
+
+    public function setBillingAddress(string $billingAddress): self
+    {
+        $this->billingAddress = $billingAddress;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
 }
 

@@ -6,12 +6,13 @@ use App\Entity\Tag;
 use App\Entity\Product;
 use App\Form\ImageType;
 use App\Entity\Category;
+use App\Form\ApplicationType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 //use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 //use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -20,27 +21,15 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
-class ProductType extends AbstractType
+class ProductType extends ApplicationType
 {
-    /**
-     * @author BAZILE-OCTUVON Kenny <kennybazileoctuvon@gmail.com> 
-     * 
-     * Permet d'avoir la configuration de base d'un champ
-     *
-     * @param string $label
-     * @param string $placeholder
-     * @param array $options
-     * @return array
-     */
-    private function getConfiguration($label, $placeholder, $options = []){
-        return array_merge([
-            'label' => $label,
-            'attr' => [
-                'placeholder' => $placeholder
-            ]
-        ], $options);
-    }
+    // Refactorisation de la méthode getConfiguration dans ApplicationType
 
+    /**
+     * @author BAZILE-OCTUVON Kenny <kennybazileoctuvon@gmail.com>
+     * 
+     * Permet de créer une nouvelle fiche produit
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
