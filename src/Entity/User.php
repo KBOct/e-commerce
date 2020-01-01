@@ -71,7 +71,7 @@ class User implements UserInterface
     private $lastName;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Commande", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Commande", mappedBy="buyer")
      */
     private $commandes;
 

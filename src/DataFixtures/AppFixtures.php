@@ -8,6 +8,7 @@ use App\Entity\Role;
 use App\Entity\User;
 use App\Entity\Image;
 use App\Entity\Product;
+use App\Entity\Commande;
 use Cocur\Slugify\Slugify;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -115,6 +116,17 @@ class AppFixtures extends Fixture
                 
                 $manager->persist($image);
             }
+
+            // Commandes
+            // for($j = 1; $j <= mt_rand(0,10);$j++){
+            //     $commande = new Commande();
+            //     $productCount = mt_rand(0,10);
+
+            //     $date = $faker->dateTimeBetween('-9 months');
+            //     $totalAmount = $product->getPrice() * $productCount;
+
+            //     $buyer = $users[mt_rand(0, count($users) - 1)]
+            // }
             
             $manager->persist($product);
         }
