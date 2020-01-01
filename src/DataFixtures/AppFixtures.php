@@ -3,8 +3,9 @@
 namespace App\DataFixtures;
 
 use Faker\Factory;
-use App\Entity\User;
+use App\Entity\Role;
 // use Cocur\Slugify\Slugify;
+use App\Entity\User;
 use App\Entity\Image;
 use App\Entity\Product;
 use Cocur\Slugify\Slugify;
@@ -33,6 +34,23 @@ class AppFixtures extends Fixture
     {
         $faker = Factory::create('fr-FR');
 
+        $adminRole = new Role();
+        $adminRole->setTitle('ROLE_ADMIN');
+        $manager->persist($adminRole);
+
+        // Admin
+
+        $adminUser = new User();
+        $adminUser->setFirstName('Kenny')
+                  ->setLastName('Bazile-Octuvon')
+                  ->setEmail('kennybazileoctuvon@gmail.com')
+                  ->setPassword($this->encoder->encodePassword($adminUser, 'password'))
+                  ->setPicture('https://media.licdn.com/dms/image/C4D03AQHp_U_2kwul6w/profile-displayphoto-shrink_200_200/0?e=1583366400&v=beta&t=sPAva04SPG7mRMhmBe9F7N_CwT3orVz7W0JtgQAxc10')
+                  ->setBillingAddress('adresse facturation')
+                  ->setDeliveryAddress('adresse livraison')
+                  ->addUserRole($adminRole);
+        $manager->persist($adminUser);
+
         // Utilisateurs
         $users=[];
         $genders=['male','female'];
@@ -41,6 +59,7 @@ class AppFixtures extends Fixture
 
         for($i = 1; $i <= 10; $i++) {
             $user = new User();
+
             $gender = $faker->randomElement($genders);
 
             $picture = 'https://randomuser.me/api/portraits/';

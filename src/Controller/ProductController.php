@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ProductController extends AbstractController
@@ -39,6 +40,7 @@ class ProductController extends AbstractController
      * Permet de créer une fiche produit
      * 
      * @Route("/products/new", name="products_create")
+     * @IsGranted("ROLE_ADMIN")
      * 
      * @return Response
      */
@@ -83,6 +85,7 @@ class ProductController extends AbstractController
      * Permet d'afficher le formulaire de modification
      * 
      * @Route("/products/{slug}/edit", name="products_edit")
+     * @IsGranted("ROLE_ADMIN")
      * 
      * @return Response
      */
